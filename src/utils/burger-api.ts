@@ -72,12 +72,12 @@ type TOrdersResponse = TServerResponse<{
 }>;
 
 export const getIngredientsApi = () =>
-  fetch(`${URL}/ingredients`)
-    .then((res) => checkResponse<TIngredientsResponse>(res))
+  fetch('https://norma.nomoreparties.space/api/ingredients')
+    .then((res) => res.json())
     .then((data) => {
       if (data?.success) return data.data;
-      return Promise.reject(data);
-    });
+    })
+    .catch((error) => console.log(error));
 
 export const getFeedsApi = () =>
   fetch(`${URL}/orders/all`)

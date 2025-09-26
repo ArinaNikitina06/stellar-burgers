@@ -3,6 +3,7 @@
 import { getIngredientsApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
+import { RootState } from '../store';
 
 type TInitialState = {
   list: TIngredient[];
@@ -16,12 +17,12 @@ const initialState: TInitialState = {
   error: ''
 };
 
-const fetchIngredients = createAsyncThunk(
+export const fetchIngredients = createAsyncThunk(
   'ingredients/fetchIngredients',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await getIngredientsApi();
-      return response;
+      const ingredients = await getIngredientsApi();
+      return ingredients;
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : 'Failed to fetch ingredients';
@@ -48,3 +49,7 @@ const ingredientsSlice = createSlice({
       });
   }
 });
+
+export const selectIngredients = (state: RootState) => state.ingredients.list;
+
+export default ingredientsSlice.reducer;
