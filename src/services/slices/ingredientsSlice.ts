@@ -51,5 +51,9 @@ const ingredientsSlice = createSlice({
 });
 
 export const selectIngredients = (state: RootState) => state.ingredients.list;
+export const selectIngredientsStatus = (state: RootState) =>
+  state.ingredients.status;
+export const selectIngredientsError = (state: RootState) =>
+  state.ingredients.error;
 
 export default ingredientsSlice.reducer;

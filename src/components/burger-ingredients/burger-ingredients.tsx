@@ -6,14 +6,19 @@ import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 import { useSelector } from 'react-redux';
 import {
   fetchIngredients,
-  selectIngredients
+  selectIngredients,
+  selectIngredientsError,
+  selectIngredientsStatus
 } from '../../services/slices/ingredientsSlice';
 import { useDispatch } from '../../services/store';
+import { Preloader } from '@ui';
 
 export const BurgerIngredients: FC = () => {
   /** TODO: взять переменные из стора */
   const dispatch = useDispatch();
   const ingredients = useSelector(selectIngredients);
+  const ingredientsStatus = useSelector(selectIngredientsStatus);
+  const ingredientsError = useSelector(selectIngredientsError);
 
   const buns = ingredients.filter((ingredient) => ingredient.type === 'bun');
   const mains = ingredients.filter((ingredient) => ingredient.type === 'main');
@@ -62,7 +67,9 @@ export const BurgerIngredients: FC = () => {
       titleSaucesRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  return (
+  return ingredientsStatus === 'load' ? (
+    <Preloader />
+  ) : (
     <BurgerIngredientsUI
       currentTab={currentTab}
       buns={buns}
