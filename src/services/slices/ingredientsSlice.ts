@@ -55,5 +55,10 @@ export const selectIngredientsStatus = (state: RootState) =>
   state.ingredients.status;
 export const selectIngredientsError = (state: RootState) =>
   state.ingredients.error;
+export const selectIngredientById = (
+  state: RootState,
+  ingredientId: string | undefined
+) =>
+  state.ingredients.list.find((ingredient) => ingredient._id === ingredientId);
 
 export default ingredientsSlice.reducer;
