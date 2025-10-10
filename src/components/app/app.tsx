@@ -23,16 +23,15 @@ const App = () => {
       <AppHeader />
       <Routes>
         <Route path='/' element={<ConstructorPage />} />
-        <Route path='/feed' element={<Feed />}>
-          <Route
-            path=':number'
-            element={
-              <Modal title='Детали заказа' onClose={() => {}}>
-                <OrderInfo />
-              </Modal>
-            }
-          />
-        </Route>
+        <Route path='/feed' element={<Feed />} />
+        <Route
+          path='/feed/:number'
+          element={
+            <Modal title='Детали заказа' onClose={() => navigate(-1)}>
+              <OrderInfo />
+            </Modal>
+          }
+        />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />

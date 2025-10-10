@@ -51,5 +51,9 @@ const feedSlice = createSlice({
 export const selectFeeds = (state: RootState) => state.feeds.list;
 export const selectFeedsStatus = (state: RootState) => state.feeds.status;
 export const selectFeedsError = (state: RootState) => state.feeds.error;
+// export const selectFeedById = (state: RootState, feedId: string | undefined) => {
+//   const result = state.feeds.list.find((feed) => feed._id === feedId);
+//   return result;
+// }
 
 export default feedSlice.reducer;
