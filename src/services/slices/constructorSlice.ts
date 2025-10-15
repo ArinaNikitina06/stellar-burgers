@@ -1,10 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
 import { RootState } from '../store';
+import { moveElementInArray } from '../../utils/utils';
 
 type TInitialState = {
   bun: TIngredient | null;
   list: TConstructorIngredient[];
+};
+
+type TReorder = {
+  currentPosition: number;
+  step: 1 | -1;
 };
 
 const initialState: TInitialState = {
@@ -28,11 +34,16 @@ const constructorSlice = createSlice({
     },
     setBun(state, action: PayloadAction<TIngredient>) {
       state.bun = action.payload;
+    },
+    reorderList(state, action: PayloadAction<TReorder>) {
+      const { currentPosition, step } = action.payload;
+      state.list = moveElementInArray(state.list, currentPosition, step);
     }
   }
 });
 
-export const { addList, removeListById, setBun } = constructorSlice.actions;
+export const { addList, removeListById, setBun, reorderList } =
+  constructorSlice.actions;
 export default constructorSlice.reducer;
 
 export const selectConstructorBun = (state: RootState) =>
