@@ -6,6 +6,13 @@ import {
   selectConstructorBun,
   selectConstructorList
 } from '../../services/slices/constructorSlice';
+import {
+  createOrder,
+  selectCreatedOrder,
+  selectOrderStatus
+} from '../../services/slices/orderSlice';
+import { useDispatch } from '../../services/store';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
@@ -16,14 +23,22 @@ export const BurgerConstructor: FC = () => {
     ingredients
   };
 
-  const orderRequest = false;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const orderModalData = null;
+  const orderRequest = useSelector(selectOrderStatus) === 'load' ? true : false;
+  const orderModalData = useSelector(selectCreatedOrder);
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
+    const ingredientsIds = [
+      constructorItems.bun._id,
+      ...constructorItems.ingredients.map((ingredient) => ingredient._id),
+      constructorItems.bun._id
+    ];
+    dispatch(createOrder(ingredientsIds));
   };
-  const closeOrderModal = () => {};
+  const closeOrderModal = () => navigate(-1);
 
   const price = useMemo(
     () =>
