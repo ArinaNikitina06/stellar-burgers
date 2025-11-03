@@ -14,9 +14,23 @@ import styles from './app.module.css';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { getCookie } from '../../utils/cookie';
+import { fetchUser } from '../../services/slices/userSlice';
+import { useDispatch } from '../../services/store';
 
 const App = () => {
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const accessToken = getCookie('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    if (accessToken && refreshToken) {
+      dispatch(fetchUser());
+    }
+  }, []);
 
   return (
     <div className={styles.app}>

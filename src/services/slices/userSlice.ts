@@ -1,28 +1,37 @@
-import { loginUserApi, registerUserApi, TLoginData, TRegisterData } from '@api';
+import {
+  getUserApi,
+  loginUserApi,
+  registerUserApi,
+  TLoginData,
+  TRegisterData
+} from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { setCookie } from 'src/utils/cookie';
+import { setCookie } from '../../utils/cookie';
 import { RootState } from '../store';
 
 type TInitialState = {
   user: TUser | null;
   status: string;
   error: string;
+  isAuth: boolean;
 };
 
 const initialState: TInitialState = {
   user: null,
   status: 'idle',
-  error: ''
+  error: '',
+  isAuth: false
 };
 
-const loginUser = createAsyncThunk(
+export const loginUser = createAsyncThunk(
   'user/login',
   async (data: TLoginData, { rejectWithValue }) => {
     try {
       const response = await loginUserApi(data);
       setCookie('accessToken', response.accessToken);
       localStorage.setItem('refreshToken', response.refreshToken);
+      console.log('action.payload', response.user);
       return response.user;
     } catch (error: unknown) {
       const errorMessage =
@@ -32,7 +41,21 @@ const loginUser = createAsyncThunk(
   }
 );
 
-const registerUser = createAsyncThunk(
+export const fetchUser = createAsyncThunk(
+  'user/fetchUser',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getUserApi();
+      return response.user;
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to user fetch!';
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const registerUser = createAsyncThunk(
   'user/register',
   async (data: TRegisterData, { rejectWithValue }) => {
     try {
@@ -42,7 +65,7 @@ const registerUser = createAsyncThunk(
       return response.user;
     } catch (error: unknown) {
       const errorMessage =
-        error instanceof Error ? error.message : 'Failed to login!';
+        error instanceof Error ? error.message : 'Failed to register!';
       return rejectWithValue(errorMessage);
     }
   }
@@ -60,10 +83,12 @@ const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.user = action.payload;
         state.status = 'idle';
+        state.isAuth = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = 'idle';
         state.error = action.payload as string;
+        state.isAuth = false;
       })
       .addCase(registerUser.pending, (state, action) => {
         state.status = 'load';
@@ -75,6 +100,17 @@ const userSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.status = 'idle';
         state.error = action.payload as string;
+      })
+      .addCase(fetchUser.pending, (state, action) => {
+        state.status = 'load';
+      })
+      .addCase(fetchUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.status = 'idle';
+      })
+      .addCase(fetchUser.rejected, (state, action) => {
+        state.status = 'idle';
+        state.error = action.payload as string;
       });
   }
 });
@@ -83,3 +119,4 @@ export default userSlice.reducer;
 export const selectUser = (state: RootState) => state.user.user;
 export const selectUserStatus = (state: RootState) => state.user.status;
 export const selectUserError = (state: RootState) => state.user.error;
+export const selectUserIsAuth = (state: RootState) => state.user.isAuth;
