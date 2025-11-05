@@ -1,13 +1,14 @@
 import {
   getUserApi,
   loginUserApi,
+  logoutApi,
   registerUserApi,
   TLoginData,
   TRegisterData
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { setCookie } from '../../utils/cookie';
+import { deleteCookie, setCookie } from '../../utils/cookie';
 import { RootState } from '../store';
 
 type TInitialState = {
@@ -71,6 +72,23 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+export const logoutUser = createAsyncThunk(
+  'user/logoutUser',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await logoutApi();
+      if (response.success) {
+        localStorage.removeItem('refreshToken');
+        deleteCookie('accessToken');
+      }
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to register!';
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -109,6 +127,18 @@ const userSlice = createSlice({
         state.status = 'idle';
       })
       .addCase(fetchUser.rejected, (state, action) => {
+        state.status = 'idle';
+        state.error = action.payload as string;
+      })
+      .addCase(logoutUser.pending, (state, action) => {
+        state.status = 'load';
+      })
+      .addCase(logoutUser.fulfilled, (state, action) => {
+        state.user = null;
+        state.isAuth = false;
+        state.status = 'idle';
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
         state.status = 'idle';
         state.error = action.payload as string;
       });
