@@ -4,7 +4,8 @@ import {
   logoutApi,
   registerUserApi,
   TLoginData,
-  TRegisterData
+  TRegisterData,
+  updateUserApi
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
@@ -89,6 +90,20 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async (data: TRegisterData, { rejectWithValue }) => {
+    try {
+      const response = await updateUserApi(data);
+      return response.user;
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to update user!';
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -139,6 +154,17 @@ const userSlice = createSlice({
         state.status = 'idle';
       })
       .addCase(logoutUser.rejected, (state, action) => {
+        state.status = 'idle';
+        state.error = action.payload as string;
+      })
+      .addCase(updateUser.pending, (state, action) => {
+        state.status = 'load';
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.status = 'idle';
+      })
+      .addCase(updateUser.rejected, (state, action) => {
         state.status = 'idle';
         state.error = action.payload as string;
       });
