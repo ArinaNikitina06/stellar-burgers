@@ -59,23 +59,22 @@ const App = () => {
               <Profile />
             </ProtectedRoute>
           }
-        >
-          {/* <Route path='orders' element={<ProfileOrders />} /> */}
-          {/* <Route
-            path='orders:number'
-            element={
-              <Modal title='' onClose={() => {}}>
-                <OrderInfo />
-              </Modal>
-            }
-          /> */}
-        </Route>
-        <Route path='/profile/orders' element={<ProfileOrders />} />
+        />
+        <Route
+          path='/profile/orders'
+          element={
+            <ProtectedRoute>
+              <ProfileOrders />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path='/profile/orders/:number'
           element={
             <Modal title='Детали заказа' onClose={() => navigate(-1)}>
-              <OrderInfo />
+              <ProtectedRoute>
+                <OrderInfo />
+              </ProtectedRoute>
             </Modal>
           }
         />

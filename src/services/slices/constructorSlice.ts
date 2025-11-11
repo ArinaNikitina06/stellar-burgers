@@ -38,12 +38,21 @@ const constructorSlice = createSlice({
     reorderList(state, action: PayloadAction<TReorder>) {
       const { currentPosition, step } = action.payload;
       state.list = moveElementInArray(state.list, currentPosition, step);
+    },
+    clearConstructor(state) {
+      state.bun = null;
+      state.list = [];
     }
   }
 });
 
-export const { addList, removeListById, setBun, reorderList } =
-  constructorSlice.actions;
+export const {
+  addList,
+  removeListById,
+  setBun,
+  reorderList,
+  clearConstructor
+} = constructorSlice.actions;
 export default constructorSlice.reducer;
 
 export const selectConstructorBun = (state: RootState) =>

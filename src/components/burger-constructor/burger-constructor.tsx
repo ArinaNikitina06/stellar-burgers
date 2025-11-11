@@ -3,6 +3,7 @@ import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useSelector } from 'react-redux';
 import {
+  clearConstructor,
   selectConstructorBun,
   selectConstructorList
 } from '../../services/slices/constructorSlice';
@@ -46,7 +47,10 @@ export const BurgerConstructor: FC = () => {
       constructorItems.bun._id
     ];
 
-    dispatch(createOrder(ingredientsIds));
+    dispatch(createOrder(ingredientsIds))
+      .unwrap()
+      .then(() => dispatch(clearConstructor()))
+      .catch((error) => console.error(error));
   };
   const closeOrderModal = () => navigate(-1);
 
