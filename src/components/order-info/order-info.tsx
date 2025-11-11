@@ -7,33 +7,18 @@ import { useSelector } from 'react-redux';
 import { selectFeeds } from '../../services/slices/feedSlice';
 import { RootState } from '../../services/store';
 import { selectIngredients } from '../../services/slices/ingredientsSlice';
+import { selectOrdersList } from '../../services/slices/orderSlice';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
   const { number } = useParams();
-  const orders = useSelector(selectFeeds);
+  const orders = useSelector(selectOrdersList);
   // const orderData = useSelector((state: RootState) =>
   //   selectFeedById(state, number)
   // );
   const ingredients: TIngredient[] = useSelector(selectIngredients);
 
-  // console.log('number', number);
-  // console.log('orders', orders);
-  // console.log('ingredients', ingredients);
-
-  // const orderData = {
-  //   createdAt: '',
-  //   ingredients: [],
-  //   _id: '',
-  //   status: '',
-  //   name: '',
-  //   updatedAt: 'string',
-  //   number: 0
-  // };
-
   const orderData = orders.find((order) => order.number.toString() === number);
-
-  // const ingredients: TIngredient[] = [];
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {

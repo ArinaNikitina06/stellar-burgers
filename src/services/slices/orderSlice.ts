@@ -1,9 +1,10 @@
-import { getOrderByNumberApi, orderBurgerApi } from '@api';
+import { getOrderByNumberApi, getOrdersApi, orderBurgerApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 import { RootState } from '../store';
 
 type TInitialState = {
+  list: TOrder[];
   created: TOrder | null;
   currentByNumber: TOrder | null;
   status: string;
@@ -11,6 +12,7 @@ type TInitialState = {
 };
 
 const initialState: TInitialState = {
+  list: [],
   created: null,
   currentByNumber: null,
   status: 'idle',
@@ -26,6 +28,20 @@ export const createOrder = createAsyncThunk<TOrder, string[]>(
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : 'Failed to order create';
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const fetchUserOrders = createAsyncThunk(
+  'order/fetchUserOrders',
+  async (_, { rejectWithValue }) => {
+    try {
+      const orders = await getOrdersApi();
+      return orders;
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to get orders';
       return rejectWithValue(errorMessage);
     }
   }
@@ -72,6 +88,17 @@ const orderSlice = createSlice({
       .addCase(fetchOrderByNumber.rejected, (state, action) => {
         state.status = 'idle';
         state.error = action.payload as string;
+      })
+      .addCase(fetchUserOrders.pending, (state) => {
+        state.status = 'load';
+      })
+      .addCase(fetchUserOrders.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.list = action.payload;
+      })
+      .addCase(fetchUserOrders.rejected, (state, action) => {
+        state.status = 'idle';
+        state.error = action.payload as string;
       });
   }
 });
@@ -83,3 +110,4 @@ export const selectCurrentOrderByNumber = (state: RootState) =>
   state.order.currentByNumber;
 export const selectOrderStatus = (state: RootState) => state.order.status;
 export const selectOrderError = (state: RootState) => state.order.error;
+export const selectOrdersList = (state: RootState) => state.order.list;

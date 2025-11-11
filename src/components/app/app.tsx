@@ -51,16 +51,25 @@ const App = () => {
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/reset-password' element={<ResetPassword />} />
         <Route path='/profile' element={<Profile />}>
-          <Route path='orders' element={<ProfileOrders />} />
-          <Route
+          {/* <Route path='orders' element={<ProfileOrders />} /> */}
+          {/* <Route
             path='orders:number'
             element={
               <Modal title='' onClose={() => {}}>
                 <OrderInfo />
               </Modal>
             }
-          />
+          /> */}
         </Route>
+        <Route path='/profile/orders' element={<ProfileOrders />} />
+        <Route
+          path='/profile/orders/:number'
+          element={
+            <Modal title='Детали заказа' onClose={() => navigate(-1)}>
+              <OrderInfo />
+            </Modal>
+          }
+        />
         <Route
           path='/ingredients/:id'
           element={
