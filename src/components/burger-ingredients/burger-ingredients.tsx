@@ -5,17 +5,13 @@ import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 import { useSelector } from 'react-redux';
 import {
-  fetchIngredients,
   selectIngredients,
   selectIngredientsError,
   selectIngredientsStatus
 } from '../../services/slices/ingredientsSlice';
-import { useDispatch } from '../../services/store';
 import { Preloader } from '@ui';
 
 export const BurgerIngredients: FC = () => {
-  /** TODO: взять переменные из стора */
-  // const dispatch = useDispatch();
   const ingredients = useSelector(selectIngredients);
   const ingredientsStatus = useSelector(selectIngredientsStatus);
   const ingredientsError = useSelector(selectIngredientsError);
@@ -42,10 +38,6 @@ export const BurgerIngredients: FC = () => {
   const [saucesRef, inViewSauces] = useInView({
     threshold: 0
   });
-
-  // useEffect(() => {
-  //   dispatch(fetchIngredients());
-  // }, []);
 
   useEffect(() => {
     if (inViewBuns) {
