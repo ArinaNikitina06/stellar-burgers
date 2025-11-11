@@ -7,7 +7,7 @@ import { RootState } from '../store';
 
 type TInitialState = {
   list: TIngredient[];
-  status: string;
+  status: 'idle' | 'load';
   error: string;
 };
 

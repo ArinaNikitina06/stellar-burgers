@@ -15,7 +15,7 @@ import { Preloader } from '@ui';
 
 export const BurgerIngredients: FC = () => {
   /** TODO: взять переменные из стора */
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const ingredients = useSelector(selectIngredients);
   const ingredientsStatus = useSelector(selectIngredientsStatus);
   const ingredientsError = useSelector(selectIngredientsError);
@@ -43,9 +43,9 @@ export const BurgerIngredients: FC = () => {
     threshold: 0
   });
 
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(fetchIngredients());
+  // }, []);
 
   useEffect(() => {
     if (inViewBuns) {

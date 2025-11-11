@@ -18,6 +18,7 @@ import { useEffect } from 'react';
 import { getCookie } from '../../utils/cookie';
 import { fetchUser } from '../../services/slices/userSlice';
 import { useDispatch } from '../../services/store';
+import ProtectedRoute from '../protected-route/protected-route';
 
 const App = () => {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ const App = () => {
   return (
     <div className={styles.app}>
       <AppHeader />
+
       <Routes>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
@@ -50,7 +52,14 @@ const App = () => {
         <Route path='/register' element={<Register />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/reset-password' element={<ResetPassword />} />
-        <Route path='/profile' element={<Profile />}>
+        <Route
+          path='/profile'
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        >
           {/* <Route path='orders' element={<ProfileOrders />} /> */}
           {/* <Route
             path='orders:number'

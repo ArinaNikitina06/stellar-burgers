@@ -13,6 +13,7 @@ import {
 } from '../../services/slices/orderSlice';
 import { useDispatch } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
+import { selectUser, selectUserIsAuth } from '../../services/slices/userSlice';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
@@ -29,13 +30,22 @@ export const BurgerConstructor: FC = () => {
   const orderRequest = useSelector(selectOrderStatus) === 'load' ? true : false;
   const orderModalData = useSelector(selectCreatedOrder);
 
+  const user = useSelector(selectUser);
+  const isAuth = useSelector(selectUserIsAuth);
+
   const onOrderClick = () => {
+    if (isAuth !== true || user === null) {
+      navigate('/login');
+      return;
+    }
+
     if (!constructorItems.bun || orderRequest) return;
     const ingredientsIds = [
       constructorItems.bun._id,
       ...constructorItems.ingredients.map((ingredient) => ingredient._id),
       constructorItems.bun._id
     ];
+
     dispatch(createOrder(ingredientsIds));
   };
   const closeOrderModal = () => navigate(-1);

@@ -14,7 +14,7 @@ import { RootState } from '../store';
 
 type TInitialState = {
   user: TUser | null;
-  status: string;
+  status: 'idle' | 'load';
   error: string;
   isAuth: boolean;
 };
@@ -129,10 +129,12 @@ const userSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.user = action.payload;
         state.status = 'idle';
+        state.isAuth = true;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.status = 'idle';
         state.error = action.payload as string;
+        state.isAuth = false;
       })
       .addCase(fetchUser.pending, (state, action) => {
         state.status = 'load';
@@ -140,18 +142,20 @@ const userSlice = createSlice({
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.user = action.payload;
         state.status = 'idle';
+        state.isAuth = true;
       })
       .addCase(fetchUser.rejected, (state, action) => {
         state.status = 'idle';
         state.error = action.payload as string;
+        state.isAuth = false;
       })
       .addCase(logoutUser.pending, (state, action) => {
         state.status = 'load';
       })
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.user = null;
-        state.isAuth = false;
         state.status = 'idle';
+        state.isAuth = false;
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.status = 'idle';
