@@ -5,7 +5,6 @@ import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 import { useSelector } from '../../services/store';
 import {
-  fetchIngredients,
   selectIngredients,
   selectIngredientsError,
   selectIngredientsStatus
@@ -42,10 +41,6 @@ export const BurgerIngredients: FC = () => {
   const [saucesRef, inViewSauces] = useInView({
     threshold: 0
   });
-
-  // useEffect(() => {
-  //   dispatch(fetchIngredients());
-  // }, []);
 
   useEffect(() => {
     if (inViewBuns) {

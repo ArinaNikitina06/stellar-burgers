@@ -19,6 +19,7 @@ import { getCookie } from '../../utils/cookie';
 import { fetchUser } from '../../services/slices/userSlice';
 import { useDispatch } from '../../services/store';
 import ProtectedRoute from '../protected-route/protected-route';
+import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 
 const App = () => {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ const App = () => {
     if (accessToken && refreshToken) {
       dispatch(fetchUser());
     }
+    dispatch(fetchIngredients());
   }, []);
 
   return (

@@ -6,7 +6,7 @@ import { TIngredient } from '@utils-types';
 import { OrderCardUI } from '../ui/order-card';
 import { useSelector } from '../../services/store';
 import {
-  fetchIngredients,
+  // fetchIngredients,
   selectIngredients
 } from '../../services/slices/ingredientsSlice';
 import { useDispatch } from '../../services/store';
@@ -19,9 +19,9 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
   /** TODO: взять переменную из стора */
   const ingredients: TIngredient[] = useSelector(selectIngredients);
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(fetchIngredients());
+  // }, []);
 
   const orderInfo = useMemo(() => {
     if (!ingredients.length) return null;

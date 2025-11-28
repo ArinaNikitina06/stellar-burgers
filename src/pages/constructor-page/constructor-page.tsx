@@ -6,7 +6,7 @@ import { Preloader } from '../../components/ui';
 import { FC, useEffect } from 'react';
 import { useSelector } from '../../services/store';
 import {
-  fetchIngredients,
+  // fetchIngredients,
   selectIngredientsStatus
 } from '../../services/slices/ingredientsSlice';
 import ProtectedRoute from '../../components/protected-route/protected-route';
@@ -18,9 +18,9 @@ export const ConstructorPage: FC = () => {
   const isIngredientsLoading = ingredientsLoading === 'load' ? true : false;
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(fetchIngredients());
+  // }, []);
 
   return (
     <>
