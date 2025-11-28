@@ -6,7 +6,7 @@ import {
   selectUserError,
   selectUserIsAuth
 } from '../../services/slices/userSlice';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
 
 export const Register: FC = () => {

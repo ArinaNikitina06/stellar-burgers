@@ -7,7 +7,7 @@ import {
 } from '../../services/slices/userSlice';
 import { useDispatch } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/store';
 
 export const Login: FC = () => {
   const [email, setEmail] = useState('');

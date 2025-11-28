@@ -9,7 +9,7 @@ import {
   selectFeedsStatus
 } from '../../services/slices/feedSlice';
 import { useDispatch } from '../../services/store';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/store';
 
 export const Feed: FC = () => {
   /** TODO: взять переменную из стора */
