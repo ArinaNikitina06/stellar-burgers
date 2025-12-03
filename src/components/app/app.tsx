@@ -20,6 +20,8 @@ import { fetchUser } from '../../services/slices/userSlice';
 import { useDispatch } from '../../services/store';
 import ProtectedRoute from '../protected-route/protected-route';
 import { fetchIngredients } from '../../services/slices/ingredientsSlice';
+import { fetchFeeds } from '../../services/slices/feedSlice';
+import { fetchUserOrders } from '../../services/slices/orderSlice';
 
 const App = () => {
   const navigate = useNavigate();
@@ -34,6 +36,8 @@ const App = () => {
       dispatch(fetchUser());
     }
     dispatch(fetchIngredients());
+    // dispatch(fetchFeeds());
+    // dispatch(fetchUserOrders());
   }, []);
 
   return (

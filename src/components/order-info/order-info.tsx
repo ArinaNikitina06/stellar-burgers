@@ -1,24 +1,46 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useParams } from 'react-router-dom';
-import { useSelector } from '../../services/store';
-import { selectFeeds } from '../../services/slices/feedSlice';
+import { useDispatch, useSelector } from '../../services/store';
+import { fetchFeeds, selectFeeds } from '../../services/slices/feedSlice';
 import { RootState } from '../../services/store';
 import { selectIngredients } from '../../services/slices/ingredientsSlice';
-import { selectOrdersList } from '../../services/slices/orderSlice';
+import {
+  fetchOrderByNumber,
+  selectCurrentOrderByNumber,
+  selectOrdersList
+} from '../../services/slices/orderSlice';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
   const { number } = useParams();
-  const orders = useSelector(selectOrdersList);
+  const orderData = useSelector(selectCurrentOrderByNumber);
+  // const orders = useSelector(selectOrdersList);
+
+  // const orders = useSelector(selectFeeds);
+
   // const orderData = useSelector((state: RootState) =>
   //   selectFeedById(state, number)
   // );
   const ingredients: TIngredient[] = useSelector(selectIngredients);
 
-  const orderData = orders.find((order) => order.number.toString() === number);
+  // const orderData = orders.find((order) => order.number.toString() === number);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // dispatch(fetchFeeds());
+    // console.log('OrderInfo useEffect');
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchOrderByNumber(Number(number)));
+  }, []);
+
+  // console.log('number', number);
+  // console.log('orders(feeds!!!)', orders);
+  // console.log('orderData', orderData);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
@@ -63,6 +85,9 @@ export const OrderInfo: FC = () => {
   }, [orderData, ingredients]);
 
   if (!orderInfo) {
+    {
+      console.log('pre...');
+    }
     return <Preloader />;
   }
 

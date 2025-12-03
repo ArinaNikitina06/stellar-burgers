@@ -9,7 +9,7 @@ import {
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { deleteCookie, setCookie } from '../../utils/cookie';
+import { deleteCookie, setCookie, getCookie } from '../../utils/cookie';
 import { RootState } from '../store';
 
 type TInitialState = {
@@ -23,7 +23,7 @@ const initialState: TInitialState = {
   user: null,
   status: 'idle',
   error: '',
-  isAuth: false
+  isAuth: !!getCookie('accessToken') || false
 };
 
 export const loginUser = createAsyncThunk(
@@ -45,9 +45,10 @@ export const loginUser = createAsyncThunk(
 
 export const fetchUser = createAsyncThunk(
   'user/fetchUser',
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
       const response = await getUserApi();
+      console.log(response.user);
       return response.user;
     } catch (error: unknown) {
       const errorMessage =
@@ -137,6 +138,7 @@ const userSlice = createSlice({
         state.isAuth = false;
       })
       .addCase(fetchUser.pending, (state, action) => {
+        console.log('state.isAuth', state.isAuth);
         state.status = 'load';
       })
       .addCase(fetchUser.fulfilled, (state, action) => {

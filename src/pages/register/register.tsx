@@ -31,11 +31,11 @@ export const Register: FC = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (isUserAuth === true) {
-  //     navigate('/');
-  //   }
-  // }, [isUserAuth]);
+  useEffect(() => {
+    if (isUserAuth === true) {
+      navigate('/');
+    }
+  }, [isUserAuth]);
 
   return (
     <RegisterUI

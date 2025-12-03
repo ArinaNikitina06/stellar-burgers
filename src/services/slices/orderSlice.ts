@@ -38,6 +38,7 @@ export const fetchUserOrders = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const orders = await getOrdersApi();
+      console.log('orders', orders);
       return orders;
     } catch (error: unknown) {
       const errorMessage =
@@ -52,6 +53,7 @@ export const fetchOrderByNumber = createAsyncThunk<TOrder, number>(
   async (number, { rejectWithValue }) => {
     try {
       const res = await getOrderByNumberApi(number);
+      console.log(res);
       return res.orders[0] as TOrder;
     } catch (error: unknown) {
       const errorMessage =

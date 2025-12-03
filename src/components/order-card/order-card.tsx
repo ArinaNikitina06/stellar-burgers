@@ -9,7 +9,6 @@ import {
   // fetchIngredients,
   selectIngredients
 } from '../../services/slices/ingredientsSlice';
-import { useDispatch } from '../../services/store';
 
 const maxIngredients = 6;
 
@@ -18,10 +17,6 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
 
   /** TODO: взять переменную из стора */
   const ingredients: TIngredient[] = useSelector(selectIngredients);
-  const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(fetchIngredients());
-  // }, []);
 
   const orderInfo = useMemo(() => {
     if (!ingredients.length) return null;

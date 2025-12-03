@@ -23,7 +23,7 @@ const ProtectedRoute: FC<TProtectedRoute> = ({ children }) => {
       return; // Если состояние загрузки, ничего не делаем
     }
 
-    if (isAuth !== true || user === null) {
+    if (isAuth !== true) {
       navigate('/login');
     }
   }, [isAuth, user, status, navigate]);

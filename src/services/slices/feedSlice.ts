@@ -24,6 +24,8 @@ export const fetchFeeds = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const feeds = await getFeedsApi();
+      console.log('fetchFeeds', feeds);
+
       return feeds;
     } catch (error: unknown) {
       const errorMessage =

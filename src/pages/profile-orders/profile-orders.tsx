@@ -5,16 +5,24 @@ import { useSelector } from '../../services/store';
 import { useDispatch } from '../../services/store';
 import {
   fetchUserOrders,
-  selectOrdersList
+  selectOrdersList,
+  selectOrderStatus
 } from '../../services/slices/orderSlice';
+import { Preloader } from '@ui';
 
 export const ProfileOrders: FC = () => {
   const dispatch = useDispatch();
   const orders: TOrder[] = useSelector(selectOrdersList);
-  console.log('orders', orders);
+  const isOrdersStatus = useSelector(selectOrderStatus);
 
   useEffect(() => {
     dispatch(fetchUserOrders());
   }, []);
+
+  {
+    if (isOrdersStatus === 'load') {
+      return <Preloader />;
+    }
+  }
   return <ProfileOrdersUI orders={orders} />;
 };
