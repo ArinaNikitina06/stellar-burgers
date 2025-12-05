@@ -8,6 +8,7 @@ import {
   selectConstructorList
 } from '../../services/slices/constructorSlice';
 import {
+  clearOrder,
   createOrder,
   selectCreatedOrder,
   selectOrderStatus
@@ -52,7 +53,10 @@ export const BurgerConstructor: FC = () => {
       .then(() => dispatch(clearConstructor()))
       .catch((error) => console.error(error));
   };
-  const closeOrderModal = () => navigate(-1);
+  const closeOrderModal = () => {
+    dispatch(clearOrder());
+    navigate(-1);
+  };
 
   const price = useMemo(
     () =>

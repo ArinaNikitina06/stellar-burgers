@@ -66,7 +66,11 @@ export const fetchOrderByNumber = createAsyncThunk<TOrder, number>(
 const orderSlice = createSlice({
   name: 'order',
   initialState,
-  reducers: {},
+  reducers: {
+    clearOrder(state) {
+      state.created = null;
+    }
+  },
   extraReducers(builder) {
     builder
       .addCase(createOrder.pending, (state) => {
@@ -106,6 +110,8 @@ const orderSlice = createSlice({
 });
 
 export default orderSlice.reducer;
+
+export const { clearOrder } = orderSlice.actions;
 
 export const selectCreatedOrder = (state: RootState) => state.order.created;
 export const selectCurrentOrderByNumber = (state: RootState) =>
