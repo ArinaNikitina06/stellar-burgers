@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
 import { RootState } from '../store';
 import { moveElementInArray } from '../../utils/utils';
@@ -22,12 +22,21 @@ const constructorSlice = createSlice({
   name: 'constructorSlice',
   initialState,
   reducers: {
-    addList(state, action: PayloadAction<TIngredient>) {
-      const burgerIngridient: TConstructorIngredient = {
-        ...action.payload,
-        id: `${action.payload._id}_${Math.random()}`
-      };
-      state.list.push(burgerIngridient);
+    addList: {
+      reducer(
+        state,
+        action: PayloadAction<{ id: string; ingredient: TIngredient }>
+      ) {
+        const burgerIngridient: TConstructorIngredient = {
+          ...action.payload.ingredient,
+          id: action.payload.id
+        };
+        state.list.push(burgerIngridient);
+      },
+      prepare: (ingredient: TIngredient) => {
+        const id = nanoid();
+        return { payload: { id, ingredient } };
+      }
     },
     removeListById(state, action: PayloadAction<string>) {
       state.list = state.list.filter((item) => item.id !== action.payload);
