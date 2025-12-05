@@ -6,7 +6,7 @@ import {
   selectUserStatus
 } from '../../services/slices/userSlice';
 import { Preloader } from '@ui';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 type TProtectedRoute = {
   children: ReactNode;
@@ -17,6 +17,7 @@ const ProtectedRoute: FC<TProtectedRoute> = ({ children }) => {
   const isAuth = useSelector(selectUserIsAuth);
   const status = useSelector(selectUserStatus);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (status === 'load') {
@@ -24,7 +25,7 @@ const ProtectedRoute: FC<TProtectedRoute> = ({ children }) => {
     }
 
     if (isAuth !== true) {
-      navigate('/login');
+      navigate('/login', { state: { from: location.pathname } });
     }
   }, [isAuth, user, status, navigate]);
 
