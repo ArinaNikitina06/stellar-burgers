@@ -9,12 +9,10 @@ import {
   selectIngredientsError,
   selectIngredientsStatus
 } from '../../services/slices/ingredientsSlice';
-import { useDispatch } from '../../services/store';
 import { Preloader } from '@ui';
 
 export const BurgerIngredients: FC = () => {
   /** TODO: взять переменные из стора */
-  // const dispatch = useDispatch();
   const ingredients = useSelector(selectIngredients);
   const ingredientsStatus = useSelector(selectIngredientsStatus);
   const ingredientsError = useSelector(selectIngredientsError);

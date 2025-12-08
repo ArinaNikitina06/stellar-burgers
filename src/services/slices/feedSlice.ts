@@ -62,9 +62,4 @@ export const selectFeedsError = (state: RootState) => state.feeds.error;
 export const selectFeedsTotal = (state: RootState) => state.feeds.total;
 export const selectFeedsTotalToday = (state: RootState) =>
   state.feeds.totalToday;
-// export const selectFeedById = (state: RootState, feedId: string | undefined) => {
-//   const result = state.feeds.list.find((feed) => feed._id === feedId);
-//   return result;
-// }
-
 export default feedSlice.reducer;

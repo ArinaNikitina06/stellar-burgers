@@ -5,7 +5,6 @@ import { FC, useEffect } from 'react';
 import {
   fetchFeeds,
   selectFeeds,
-  selectFeedsError,
   selectFeedsStatus
 } from '../../services/slices/feedSlice';
 import { useDispatch } from '../../services/store';
@@ -16,7 +15,6 @@ export const Feed: FC = () => {
   const dispatch = useDispatch();
   const orders: TOrder[] = useSelector(selectFeeds);
   const feedsOrdersStatus = useSelector(selectFeedsStatus);
-  const feedsOrderError = useSelector(selectFeedsError);
 
   const handleGetFeeds = () => {
     dispatch(fetchFeeds());
@@ -25,10 +23,6 @@ export const Feed: FC = () => {
   useEffect(() => {
     dispatch(fetchFeeds());
   }, []);
-
-  // if (feedsOrderError.length > 0) {
-  //   return <Error />
-  // }
 
   if (!orders.length || feedsOrdersStatus === 'load') {
     return <Preloader />;
